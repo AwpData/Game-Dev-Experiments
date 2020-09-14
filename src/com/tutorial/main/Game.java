@@ -3,6 +3,7 @@ package com.tutorial.main;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.Serializable;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable, Serializable {
 
@@ -13,11 +14,25 @@ public class Game extends Canvas implements Runnable, Serializable {
 
     // The game will run on a single thread (Threads run programs splitting the tasks between threads [Multi-threaded CPUS!])
     private Thread thread;
+
     // This tells if the program is running or not (based on thread)
     private boolean running = false;
 
+    // This handler handles every object (renders and ticks them)
+    private Handler handler;
+
+    // Testing for rendering
+    private Random r = new Random();
+
     public Game() {
         new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
+
+        handler = new Handler();
+
+        // Renders 50 random players along the screen (TEST)
+        for (int i = 0; i < 50; i++) {
+            handler.addObject(new Player(100, 100, ID.Player));
+        }
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)
@@ -66,10 +81,12 @@ public class Game extends Canvas implements Runnable, Serializable {
             }
         }
         stop(); // Stopped running program so KILL THE THREAD!
-}
+    }
 
+    // ticks every object with our handler
+    // ticking is like the pre-render actions that occur (Ex. moving character right)
     private void tick() {
-
+        handler.tick();
     }
 
     private void render() {
@@ -86,6 +103,8 @@ public class Game extends Canvas implements Runnable, Serializable {
         g.setColor(Color.black);
         // But we must also make a rectangle to hide it
         g.fillRect(0, 0, WIDTH, HEIGHT);
+        // Renders every object with our handler
+        handler.render(g);
         // Then we can get rid of graphics since we don't need it anymore (so it doesn't add to memory)
         g.dispose();
         // And finally we can show it to the screen through the buffer!

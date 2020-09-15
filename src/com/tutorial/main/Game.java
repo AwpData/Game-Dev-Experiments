@@ -21,18 +21,25 @@ public class Game extends Canvas implements Runnable, Serializable {
     // This handler handles every object (renders and ticks them)
     private Handler handler;
 
-    // Testing for rendering
+    // The HUD
+    private HUD hud;
+
+    // Random object for random object positioning
     private Random r = new Random();
 
+
     public Game() {
+        // Put handler here to avoid nullpointerexception as the window did not "see" the handler when it tried calling handler.render(g)
+        // Same with HUD (HUD.render(g))
+        handler = new Handler();
+        hud = new HUD();
+        // Listens for any keys pressing
+        this.addKeyListener(new KeyInput(handler));
         new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
 
-        handler = new Handler();
-
-        // Renders 50 random players along the screen (TEST)
-        for (int i = 0; i < 50; i++) {
-            handler.addObject(new Player(100, 100, ID.Player));
-        }
+        // Places character in the middle of the screen
+        handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player));
+        handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy));
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)
@@ -55,6 +62,8 @@ public class Game extends Canvas implements Runnable, Serializable {
     @Override
     // Updates the game constantly (game loop) -> this one is very popular (FPS)
     public void run() {
+        // This is here to focus on the window so you don't have to click it before playing
+        this.requestFocus();
         long lastTime = System.nanoTime(); // gets current time to the nanosecond
         double amountOfTicks = 60.0; // sets the number of ticks
         double ns = 1000000000 / amountOfTicks; // determines how many times we can divide one second (in nanosecond) into 60 ticks
@@ -84,11 +93,13 @@ public class Game extends Canvas implements Runnable, Serializable {
     }
 
     // ticks every object with our handler
-    // ticking is like the pre-render actions that occur (Ex. moving character right)
+    // ticking is like the pre-render actions that occur for all objects (Ex. moving character right)
     private void tick() {
         handler.tick();
+        hud.tick();
     }
 
+    // this renders what we see on screen (and anything that has changed with tick() method)
     private void render() {
         // Lowers the FPS significantly by "slowing" what is shown on screen. It is set to NULL initially
         BufferStrategy bs = this.getBufferStrategy();
@@ -105,15 +116,22 @@ public class Game extends Canvas implements Runnable, Serializable {
         g.fillRect(0, 0, WIDTH, HEIGHT);
         // Renders every object with our handler
         handler.render(g);
+        // Then we render the hud because handler does actions that would affect the hud (like health bar)
+        hud.render(g);
         // Then we can get rid of graphics since we don't need it anymore (so it doesn't add to memory)
         g.dispose();
         // And finally we can show it to the screen through the buffer!
         bs.show();
     }
 
+    // Takes object's coordinate (x or y) and makes sure it doesn't go beyond it's width / height or min
+    public static int clamp(int var, int min, int max) {
+        if (var >= max) {
+            return max;
+        } else return Math.max(var, min);
+    }
+
     public static void main(String[] args) {
         new Game();
     }
-
-
 }

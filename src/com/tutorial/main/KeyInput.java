@@ -16,7 +16,7 @@ public class KeyInput extends KeyAdapter {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
 
-            // key events for player 1 (VK_W stores 87 for example, the keycode)
+            // key events for player (VK_W stores 87 for example, the keycode)
             if (tempObject.getId() == ID.Player) {
                 if (key == KeyEvent.VK_W) {
                     tempObject.setVelY(-5);
@@ -42,7 +42,7 @@ public class KeyInput extends KeyAdapter {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
 
-            // Stops all movement on key press for player 1
+            // Stops all movement on key press for player
             if (tempObject.getId() == ID.Player) {
                 if (key == KeyEvent.VK_W) {
                     tempObject.setVelY(0);

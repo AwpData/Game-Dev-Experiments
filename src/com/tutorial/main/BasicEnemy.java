@@ -6,11 +6,20 @@ import java.util.Random;
 public class BasicEnemy extends GameObject {
 
     Random r = new Random();
+    private Handler handler;
 
-    public BasicEnemy(int x, int y, ID id) {
+    public BasicEnemy(int x, int y, ID id, Handler handler) {
         super(x, y, id);
-        velX = r.nextInt(10) + 1;
-        velY = r.nextInt(10) + 1;
+        velX = 5;
+        velY = 5;
+        this.handler = handler;
+        handler.addObject(this);
+    }
+
+    @Override
+    // We set an invisible boundary as a collision mask at whatever point the enemy is at
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, 16, 16);
     }
 
     @Override
@@ -19,14 +28,18 @@ public class BasicEnemy extends GameObject {
         x += velX;
         y += velY;
 
+        // We cannot clamp the enemies because they are constantly moving and we have to change their velocities instead
         // Bounces off edge if greater than max or min height (- 60 because it would bounce off screen so decreased the height!)
-        if (y <= 0 || y >= Game.HEIGHT - 60) {
+        if (y <= 0 || y >= Game.HEIGHT - 50) {
             velY *= -1;
         }
         // Bounces off edge if greater than max or min width ( - 32 for same reason for height)
-        if (x <= 0 || x >= Game.WIDTH - 36) {
+        if (x <= 0 || x >= Game.WIDTH - 30) {
             velX *= -1;
         }
+
+        // Creates a new trail for the enemy (smaller life = longer time on screen!)
+        new Trail(x, y, ID.Trail, new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 16, 16, 0.07f, handler);
     }
 
     @Override

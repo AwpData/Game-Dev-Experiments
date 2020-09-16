@@ -35,11 +35,16 @@ public class Game extends Canvas implements Runnable, Serializable {
         hud = new HUD();
         // Listens for any keys pressing
         this.addKeyListener(new KeyInput(handler));
-        new Window(WIDTH, HEIGHT, "Let's Build a Game!", this);
+        new Window(WIDTH, HEIGHT, "Avoid Them...", this);
 
         // Places character in the middle of the screen
-        handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player));
-        handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy));
+        new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
+
+        // Spawns enemies
+        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
+        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
+        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
+        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)

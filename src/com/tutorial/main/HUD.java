@@ -8,11 +8,11 @@ public class HUD {
     public static int HEALTH = 100;
 
     public void tick() {
-        HEALTH--;
-        // And we clamp the health to not go outside of the bar at 0
+        // And we clamp the health to not go outside of the bar at 0 while it decreases due to collisions
         HEALTH = Game.clamp(HEALTH, 0, 100);
     }
 
+    // Yes, there is a difference between "fill" and "draw" (think about it)
     public void render(Graphics g) {
         // background of the health bar
         g.setColor(Color.gray);

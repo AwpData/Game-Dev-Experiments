@@ -11,13 +11,16 @@ public class Handler {
 
     // ## tick and render each object with polymorphism ##
     public void tick() {
-        for (GameObject tempObject : object) {
+        // I can't use a for-each loop because I get an error for the trail :(
+        for (int i = 0; i < object.size(); i++) {
+            GameObject tempObject = object.get(i);
             tempObject.tick();
         }
     }
 
     public void render(Graphics g) {
-        for (GameObject tempObject : object) {
+        for (int i = 0; i < object.size(); i++) {
+            GameObject tempObject = object.get(i);
             tempObject.render(g);
         }
     }

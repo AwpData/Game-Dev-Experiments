@@ -24,15 +24,20 @@ public class Game extends Canvas implements Runnable, Serializable {
     // The HUD
     private HUD hud;
 
+    // Spawn class for enemies
+    private Spawn spawner;
+
     // Random object for random object positioning
     private Random r = new Random();
 
 
     public Game() {
         // Put handler here to avoid nullpointerexception as the window did not "see" the handler when it tried calling handler.render(g)
-        // Same with HUD (HUD.render(g))
+        // Same with HUD (HUD.render(g)) & spawner
         handler = new Handler();
         hud = new HUD();
+        spawner = new Spawn(handler, hud);
+
         // Listens for any keys pressing
         this.addKeyListener(new KeyInput(handler));
         new Window(WIDTH, HEIGHT, "Avoid Them...", this);
@@ -40,11 +45,8 @@ public class Game extends Canvas implements Runnable, Serializable {
         // Places character in the middle of the screen
         new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
 
-        // Spawns enemies
-        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
-        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
-        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
-        new BasicEnemy(r.nextInt(WIDTH - 15), r.nextInt(HEIGHT - 15), ID.BasicEnemy, handler);
+        // Level 1 enemy
+        new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)
@@ -102,6 +104,7 @@ public class Game extends Canvas implements Runnable, Serializable {
     private void tick() {
         handler.tick();
         hud.tick();
+        spawner.tick();
     }
 
     // this renders what we see on screen (and anything that has changed with tick() method)
@@ -112,7 +115,6 @@ public class Game extends Canvas implements Runnable, Serializable {
             this.createBufferStrategy(3); // Triple Buffered V-Sync?
             return;
         }
-
         // Sets the graphics for the game -> first it runs through the buffer to "slow" it
         Graphics g = bs.getDrawGraphics();
         // This stops the flashing

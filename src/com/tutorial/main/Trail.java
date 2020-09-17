@@ -46,8 +46,8 @@ public class Trail extends GameObject {
         // Renders be sandwiched or it will make other things transparent on accident (between alpha and 1)
         g2d.setComposite(makeTransparent(alpha));
 
-        g.setColor(color);
-        g.fillRect(x, y, width, height);
+        g2d.setColor(color);
+        g2d.fillRect(x, y, width, height);
 
         g2d.setComposite(makeTransparent(1));
     }

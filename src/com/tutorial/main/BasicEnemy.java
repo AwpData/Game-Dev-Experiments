@@ -8,6 +8,10 @@ public class BasicEnemy extends GameObject {
     Random r = new Random();
     private Handler handler;
 
+    // Kills them off screen over time to prevent lag
+    private int lifeSpan = 1000;
+    private int ageTime = 2;
+
     public BasicEnemy(int x, int y, ID id, Handler handler) {
         super(x, y, id);
         velX = 5;
@@ -25,6 +29,11 @@ public class BasicEnemy extends GameObject {
     @Override
     // What changes every tick
     public void tick() {
+        // I created a lifespan for these things that I will implement later
+      /*  lifeSpan -= ageTime;
+        if (lifeSpan < 0) {
+            handler.removeObject(this);
+        }*/
         x += velX;
         y += velY;
 
@@ -39,13 +48,14 @@ public class BasicEnemy extends GameObject {
         }
 
         // Creates a new trail for the enemy (smaller life = longer time on screen!)
-        new Trail(x, y, ID.Trail, new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 16, 16, 0.07f, handler);
+        new Trail(x, y, ID.Trail, Color.orange, 16, 16, 0.07f, handler);
     }
 
     @Override
     // What you will see after the tick!
     public void render(Graphics g) {
-        g.setColor(Color.red);
+        g.setColor(Color.orange);
         g.fillRect(x, y, 16, 16);
     }
+
 }

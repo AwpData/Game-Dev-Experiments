@@ -132,7 +132,7 @@ public class Game extends Canvas implements Runnable, Serializable {
     }
 
     // Takes object's coordinate (x or y) and makes sure it doesn't go beyond it's width / height or min
-    public static int clamp(int var, int min, int max) {
+    public static float clamp(float var, float min, float max) {
         if (var >= max) {
             return max;
         } else return Math.max(var, min);

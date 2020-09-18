@@ -17,7 +17,7 @@ public class Player extends GameObject {
     @Override
     // We set an invisible boundary as a collision mask at whatever point the player is at
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 32, 32);
+        return new Rectangle((int) x, (int) y, 32, 32);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Player extends GameObject {
     private void collision() {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
-            if (tempObject.getId() == ID.BasicEnemy) {
+            if (tempObject.getId() == ID.BasicEnemy || tempObject.getId() == ID.SmartEnemy) {
                 // intersects() is how to check if two objects collide (at their bounds of course)
                 if (getBounds().intersects(tempObject.getBounds())) {
                     // collision code
@@ -57,7 +57,7 @@ public class Player extends GameObject {
 
         // g.setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
         g.setColor(Color.white);
-        g.fillRect(x, y, 32, 32);
+        g.fillRect((int) x, (int) y, 32, 32);
     }
 
 

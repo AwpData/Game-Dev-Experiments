@@ -17,7 +17,7 @@ public class Trail extends GameObject {
     // The smaller the life, the longer the trail will be on screen
 
     // Trails can have different colors, widths, life (time on screen) and heights
-    public Trail(int x, int y, ID id, Color color, int width, int height, float life, Handler handler) {
+    public Trail(float x, float y, ID id, Color color, int width, int height, float life, Handler handler) {
         super(x, y, id);
         this.color = color;
         this.width = width;
@@ -47,7 +47,7 @@ public class Trail extends GameObject {
         g2d.setComposite(makeTransparent(alpha));
 
         g2d.setColor(color);
-        g2d.fillRect(x, y, width, height);
+        g2d.fillRect((int) x, (int) y, width, height);
 
         g2d.setComposite(makeTransparent(1));
     }

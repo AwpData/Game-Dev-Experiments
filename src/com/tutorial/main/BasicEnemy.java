@@ -12,7 +12,7 @@ public class BasicEnemy extends GameObject {
     private int lifeSpan = 1000;
     private int ageTime = 2;
 
-    public BasicEnemy(int x, int y, ID id, Handler handler) {
+    public BasicEnemy(float x, float y, ID id, Handler handler) {
         super(x, y, id);
         velX = 5;
         velY = 5;
@@ -23,14 +23,14 @@ public class BasicEnemy extends GameObject {
     @Override
     // We set an invisible boundary as a collision mask at whatever point the enemy is at
     public Rectangle getBounds() {
-        return new Rectangle(x, y, 16, 16);
+        return new Rectangle((int) x, (int) y, 16, 16);
     }
 
     @Override
     // What changes every tick
     public void tick() {
         // I created a lifespan for these things that I will implement later
-      /*  lifeSpan -= ageTime;
+       /* lifeSpan -= ageTime;
         if (lifeSpan < 0) {
             handler.removeObject(this);
         }*/
@@ -55,7 +55,7 @@ public class BasicEnemy extends GameObject {
     // What you will see after the tick!
     public void render(Graphics g) {
         g.setColor(Color.orange);
-        g.fillRect(x, y, 16, 16);
+        g.fillRect((int) x, (int) y, 16, 16);
     }
 
 }

@@ -34,6 +34,9 @@ public class Spawn {
             if (hud.getLevel() % 5 == 0) {
                 new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
             }
+            if (hud.getLevel() == 3) {
+                new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+            }
         }
     }
 }

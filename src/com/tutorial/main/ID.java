@@ -5,6 +5,7 @@ public enum ID {
     Player(),
     BasicEnemy(), // Basic enemy and fast enemy share the same ID
     SmartEnemy(),
+    EnemyBoss(),
     Trail()
 }
 

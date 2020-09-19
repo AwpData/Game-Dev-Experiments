@@ -11,9 +11,11 @@ public class SmartEnemy extends GameObject {
 
     private GameObject player;
 
+
     public SmartEnemy(int x, int y, ID id, Handler handler) {
         super(x, y, id);
         this.handler = handler;
+
         handler.addObject(this);
     }
 
@@ -23,7 +25,9 @@ public class SmartEnemy extends GameObject {
     }
 
     @Override
+    // This is the only class (for now) that has to access another object's coordinates, thus we must keep getting that object for reference
     public void tick() {
+
         // Getting the player so it can follow it (We have to keep getting it to update it's x values I guess)
         for (int i = 0; i < handler.object.size(); i++) {
             if (handler.object.get(i).getId() == ID.Player) {
@@ -31,6 +35,8 @@ public class SmartEnemy extends GameObject {
             }
         }
 
+        // Using the pythagorean theorem to get the distance between smart enemy and the player which will thus set the velocity
+        // I don't know how to explain this equation lol
         float diffX = x - player.getX() - 8;
         float diffY = y - player.getY() - 8;
         float distance = (float) Math.sqrt(Math.pow(x - player.getX(), 2) + Math.pow(y - player.getY(), 2));
@@ -40,9 +46,6 @@ public class SmartEnemy extends GameObject {
 
         x += velX;
         y += velY;
-
-        // Using the pythagorean theorem to get the distance between smart enemy and the player which will thus set the velocity
-        // I don't know how to explain this equation lol
 
         if (y <= 0 || y >= Game.HEIGHT - 50) {
             velY *= -1;

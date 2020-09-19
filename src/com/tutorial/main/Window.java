@@ -2,6 +2,7 @@ package com.tutorial.main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.io.Serializable;
 
 public class Window extends Canvas implements Serializable {
@@ -24,7 +25,6 @@ public class Window extends Canvas implements Serializable {
         frame.setLocationRelativeTo(null);
         frame.add(game);
         frame.setVisible(true);
-
         // Run the game!
         game.start();
     }

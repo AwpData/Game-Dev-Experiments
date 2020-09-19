@@ -35,4 +35,15 @@ public class Handler {
         this.object.remove(object);
     }
 
+    // Removes all enemies for bosses (I have to i-- since this is a dynamic list)
+    public void clearEnemies() {
+        for (int i = 0; i < object.size(); i++) {
+            ID id = object.get(i).getId();
+            if (id == ID.BasicEnemy || id == ID.SmartEnemy) {
+                removeObject(object.get(i));
+                i--;
+            }
+        }
+    }
+
 }

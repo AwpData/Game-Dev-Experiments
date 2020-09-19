@@ -29,14 +29,14 @@ public class Player extends GameObject {
         // Prevents player from running off screen by restraining it with Game.clamp() method
         x = Game.clamp(x, 0, Game.WIDTH - 48);
         y = Game.clamp(y, 0, Game.HEIGHT - 70);
-        new Trail(x, y, ID.Player, Color.white, 32, 32, 0.1f, handler);
+        new Trail(x, y, ID.Trail, Color.white, 32, 32, 0.1f, handler);
         collision();
     }
 
     private void collision() {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
-            if (tempObject.getId() == ID.BasicEnemy || tempObject.getId() == ID.SmartEnemy) {
+            if (tempObject.getId() == ID.BasicEnemy || tempObject.getId() == ID.SmartEnemy || tempObject.getId() == ID.EnemyBoss) {
                 // intersects() is how to check if two objects collide (at their bounds of course)
                 if (getBounds().intersects(tempObject.getBounds())) {
                     // collision code
@@ -59,6 +59,4 @@ public class Player extends GameObject {
         g.setColor(Color.white);
         g.fillRect((int) x, (int) y, 32, 32);
     }
-
-
 }

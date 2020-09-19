@@ -25,6 +25,7 @@ public class FastEnemy extends GameObject {
     @Override
     // What changes every tick
     public void tick() {
+
         x += velX;
         y += velY;
 

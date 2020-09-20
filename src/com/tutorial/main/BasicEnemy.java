@@ -8,6 +8,10 @@ public class BasicEnemy extends GameObject {
     Random r = new Random();
     private Handler handler;
 
+    // Kills them off screen over time for next levels
+   /* private int lifeSpan = 1000;
+    private int ageTime = 2;*/
+
     public BasicEnemy(float x, float y, ID id, Handler handler) {
         super(x, y, id);
         velX = 5;
@@ -25,7 +29,11 @@ public class BasicEnemy extends GameObject {
     @Override
     // What changes every tick
     public void tick() {
-
+        // I created a lifespan for these things that I will implement later (for alt. level progression)
+      /*  lifeSpan -= ageTime;
+        if (lifeSpan < 0) {
+            handler.removeObject(this);
+        }*/
         x += velX;
         y += velY;
 

@@ -18,6 +18,9 @@ public class Game extends Canvas implements Runnable, Serializable {
     // This tells if the program is running or not (based on thread)
     private boolean running = false;
 
+    // The menu
+    private StateHandler stateHandler;
+
     // This handler handles every object (renders and ticks them)
     private Handler handler;
 
@@ -30,23 +33,33 @@ public class Game extends Canvas implements Runnable, Serializable {
     // Random object for random object positioning
     private Random r = new Random();
 
+    // Enums that track which screen we are on for ticking and rendering purposes (changes the game's state)
+    public enum STATE {
+        Menu,
+        Help,
+        GameOver,
+        Game
+    }
+
+    // This line will determine what is shown on screen (Menu is first obviously)
+    public STATE gameState = STATE.Menu;
 
     public Game() {
         // Put handler here to avoid nullpointerexception as the window did not "see" the handler when it tried calling handler.render(g)
         // Same with HUD (HUD.render(g)) & spawner
         handler = new Handler();
-        hud = new HUD();
-        spawner = new Spawn(handler, hud);
 
-        // Listens for any keys pressing
+        stateHandler = new StateHandler(this, handler);
+
+        // Listens for any keys and mouse pressing
         this.addKeyListener(new KeyInput(handler));
+        this.addMouseListener(new StateHandler(this, handler));
+
+        // Window!
         new Window(WIDTH, HEIGHT, "Avoid Them...", this);
 
-        // Places character in the middle of the screen
-        new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler);
-
-        // Level 1 enemy
-        new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+        hud = new HUD();
+        spawner = new Spawn(handler, hud);
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)
@@ -103,8 +116,17 @@ public class Game extends Canvas implements Runnable, Serializable {
     // ticking is like the pre-render actions that occur for all objects (Ex. moving character right)
     private void tick() {
         handler.tick();
-        hud.tick();
-        spawner.tick();
+        // It depends on what STATE is what is updated for rendering
+        if (gameState == STATE.Game) {
+            hud.tick();
+            spawner.tick();
+            // If health is 0 game is over
+            if (HUD.HEALTH == 0) {
+                gameState = STATE.GameOver;
+            }
+        } else if (gameState == STATE.Menu) {
+            stateHandler.tick();
+        }
     }
 
     // this renders what we see on screen (and anything that has changed with tick() method)
@@ -121,10 +143,15 @@ public class Game extends Canvas implements Runnable, Serializable {
         g.setColor(Color.black);
         // But we must also make a rectangle to hide it
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        // Renders every object with our handler
-        handler.render(g);
-        // Then we render the hud because handler does actions that would affect the hud (like health bar)
-        hud.render(g);
+
+        // Render checks what state we are in to correctly render stuff
+        if (gameState == STATE.Game) {
+            // Renders the handler (for all objects) and the hud
+            handler.render(g);
+            hud.render(g);
+        } else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver) {
+            stateHandler.render(g);
+        }
         // Then we can get rid of graphics since we don't need it anymore (so it doesn't add to memory)
         g.dispose();
         // And finally we can show it to the screen through the buffer!

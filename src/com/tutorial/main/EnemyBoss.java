@@ -65,6 +65,8 @@ public class EnemyBoss extends GameObject {
             velY *= -1;
         }
         */
+
+        // Boss will continuously bounce left and right
         if (x <= 0 || x >= Game.WIDTH - 64) {
             velX *= -1;
         }

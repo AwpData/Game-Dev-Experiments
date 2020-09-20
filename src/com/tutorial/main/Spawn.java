@@ -23,7 +23,7 @@ public class Spawn {
         scoreKeep++;
         // This makes it easier to manage the score because we don't want to modify the HUD score
         // Every 100 points we increment the level and reset scoreKeep to keep progressing the game
-        if (scoreKeep >= 250) {
+        if (scoreKeep >= 200) {
             scoreKeep = 0;
             hud.setLevel(hud.getLevel() + 1);
             // Spawns basic enemies that are not on level multiples of 5
@@ -52,7 +52,7 @@ public class Spawn {
         }
     }
 }
-// Put back later for progression
+// Alternative progression (endless spawns until next boss
 /*  if (hud.getLevel() % 5 != 0) {
                 new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
             }

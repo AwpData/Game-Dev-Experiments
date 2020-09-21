@@ -5,16 +5,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-// StateHandler manages the current screen shown (but not what updates for Game class)
+// StateHandler manages the current screen shown (but doesn't update Game class)
 public class StateHandler extends MouseAdapter {
 
     private Game game;
     private Handler handler;
+    private HUD hud;
     private Random r = new Random();
 
-    public StateHandler(Game game, Handler handler) {
+    public StateHandler(Game game, Handler handler, HUD hud) {
         this.game = game;
         this.handler = handler;
+        this.hud = hud;
     }
 
     public void mousePressed(MouseEvent e) {
@@ -22,11 +24,11 @@ public class StateHandler extends MouseAdapter {
         int mx = e.getX();
         int my = e.getY();
 
-
         if (game.gameState == Game.STATE.Menu) {
             // Play button
             if (mouseOver(mx, my, 220, 100, 200, 64)) {
                 game.gameState = Game.STATE.Game;
+                handler.clearParticles();
                 // Places character in the middle of the screen
                 new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
                 // Level 1 enemy
@@ -34,6 +36,7 @@ public class StateHandler extends MouseAdapter {
             }
             // Help button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
+                handler.clearParticles();
                 game.gameState = Game.STATE.Help;
             }
 
@@ -41,6 +44,7 @@ public class StateHandler extends MouseAdapter {
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
                 System.exit(0);
             }
+
         } else if (game.gameState == Game.STATE.Help) {
             // Play button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
@@ -50,18 +54,34 @@ public class StateHandler extends MouseAdapter {
                 // Level 1 enemy
                 new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
             }
+            // Menu button
+            if (mouseOver(mx, my, 220, 300, 200, 64)) {
+                game.gameState = Game.STATE.Menu;
+                for (int i = 0; i < 10; i++) {
+                    new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
+                }
+            }
+
         } else if (game.gameState == Game.STATE.GameOver) {
+            // If the user wants to play again, we reset everything pretty much (even menu particles)
+            // Menu Button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
+                game.gameState = Game.STATE.Menu;
+                HUD.HEALTH = 200;
+                hud.setScore(0);
+                hud.setLevel(1);
+                for (int i = 0; i < 10; i++) {
+                    new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
+                }
+            }
+            // Quit Button
+            if (mouseOver(mx, my, 220, 300, 200, 64)) {
                 System.exit(0);
             }
         }
-
     }
 
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
+    // Checks if the mouse is over a clickable button
     private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
         // If we are within a box's widths and heights, it is clickable
         // We do + width and + height because we need to be within bounds of the box
@@ -69,10 +89,6 @@ public class StateHandler extends MouseAdapter {
             return my > y && my < y + height;
         }
         return false;
-    }
-
-    public void tick() {
-
     }
 
     public void render(Graphics g) {
@@ -88,7 +104,6 @@ public class StateHandler extends MouseAdapter {
             g.drawString("Avoid Them...", 160, 75);
 
             g.setFont(fntSmall);
-
             g.drawRect(220, 100, 200, 64);
             g.drawString("Play", 292, 140);
 
@@ -107,17 +122,26 @@ public class StateHandler extends MouseAdapter {
 
             g.drawRect(220, 200, 200, 64);
             g.drawString("Play", 292, 240);
+
+            g.drawRect(220, 300, 200, 64);
+            g.drawString("Menu", 292, 340);
+
         } else if (game.gameState == Game.STATE.GameOver) {
             // clears the screen if game is over and shows game over screen
             handler.object.clear();
             g.setFont(fnt);
             g.setColor(Color.red);
-            g.drawString("Game Over", 160, 75);
+            g.drawString("Game Over", 195, 75);
 
             g.setFont(fntSmall);
             g.setColor(Color.white);
+            g.drawString("Score: " + hud.getScore(), 205, 115);
+
             g.drawRect(220, 200, 200, 64);
-            g.drawString("Quit", 292, 240);
+            g.drawString("Menu", 282, 240);
+
+            g.drawRect(220, 300, 200, 64);
+            g.drawString("Quit", 292, 340);
         }
     }
 }

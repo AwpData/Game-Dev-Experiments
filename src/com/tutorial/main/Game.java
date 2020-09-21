@@ -30,6 +30,9 @@ public class Game extends Canvas implements Runnable, Serializable {
     // Spawn class for enemies
     private Spawn spawner;
 
+    // The particle
+    private Particle particle;
+
     // Random object for random object positioning
     private Random r = new Random();
 
@@ -38,28 +41,34 @@ public class Game extends Canvas implements Runnable, Serializable {
         Menu,
         Help,
         GameOver,
-        Game
+        Game,
+        Leaderboard
     }
 
     // This line will determine what is shown on screen (Menu is first obviously)
     public STATE gameState = STATE.Menu;
 
     public Game() {
-        // Put handler here to avoid nullpointerexception as the window did not "see" the handler when it tried calling handler.render(g)
-        // Same with HUD (HUD.render(g)) & spawner
+        // Put handler here to avoid nullpointerexception (Create before we use it)
         handler = new Handler();
-
-        stateHandler = new StateHandler(this, handler);
+        hud = new HUD();
+        stateHandler = new StateHandler(this, handler, hud);
 
         // Listens for any keys and mouse pressing
         this.addKeyListener(new KeyInput(handler));
-        this.addMouseListener(new StateHandler(this, handler));
+        this.addMouseListener(new StateHandler(this, handler, hud));
+
+        spawner = new Spawn(handler, hud);
 
         // Window!
         new Window(WIDTH, HEIGHT, "Avoid Them...", this);
 
-        hud = new HUD();
-        spawner = new Spawn(handler, hud);
+        // Spawn menu particles
+        if (gameState == STATE.Menu) {
+            for (int i = 0; i < 10; i++) {
+                new Particle(r.nextInt(WIDTH - 50), r.nextInt(HEIGHT - 50), ID.Particle, handler);
+            }
+        }
     }
 
     // Starts up the thread (Synchronized means that everything stops until this is finished running)
@@ -124,8 +133,6 @@ public class Game extends Canvas implements Runnable, Serializable {
             if (HUD.HEALTH == 0) {
                 gameState = STATE.GameOver;
             }
-        } else if (gameState == STATE.Menu) {
-            stateHandler.tick();
         }
     }
 
@@ -145,9 +152,9 @@ public class Game extends Canvas implements Runnable, Serializable {
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         // Render checks what state we are in to correctly render stuff
+        handler.render(g);
         if (gameState == STATE.Game) {
             // Renders the handler (for all objects) and the hud
-            handler.render(g);
             hud.render(g);
         } else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver) {
             stateHandler.render(g);

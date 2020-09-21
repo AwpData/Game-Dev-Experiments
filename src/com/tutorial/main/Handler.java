@@ -46,4 +46,14 @@ public class Handler {
         }
     }
 
+    // Removes all menu particles for game
+    public void clearParticles() {
+        for (int i = 0; i < object.size(); i++) {
+            ID id = object.get(i).getId();
+            if (id == ID.Particle) {
+                removeObject(object.get(i));
+                i--;
+            }
+        }
+    }
 }

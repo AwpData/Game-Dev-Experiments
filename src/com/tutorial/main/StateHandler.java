@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
+// Java can only handle up to 16 bit sound files... please check this before adding
 // StateHandler manages the current screen shown (but doesn't update Game class)
 public class StateHandler extends MouseAdapter {
 
@@ -27,6 +28,8 @@ public class StateHandler extends MouseAdapter {
         if (game.gameState == Game.STATE.Menu) {
             // Play button
             if (mouseOver(mx, my, 220, 100, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
+                AudioPlayer.playMusic("res/game_music.wav");
                 game.gameState = Game.STATE.Game;
                 handler.clearParticles();
                 // Places character in the middle of the screen
@@ -36,18 +39,22 @@ public class StateHandler extends MouseAdapter {
             }
             // Help button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
                 handler.clearParticles();
                 game.gameState = Game.STATE.Help;
             }
 
             // Quit button
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
                 System.exit(0);
             }
 
         } else if (game.gameState == Game.STATE.Help) {
             // Play button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
+                AudioPlayer.playMusic("res/game_music.wav");
                 game.gameState = Game.STATE.Game;
                 // Places character in the middle of the screen
                 new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
@@ -56,6 +63,7 @@ public class StateHandler extends MouseAdapter {
             }
             // Menu button
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
                 game.gameState = Game.STATE.Menu;
                 for (int i = 0; i < 10; i++) {
                     new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
@@ -66,16 +74,13 @@ public class StateHandler extends MouseAdapter {
             // If the user wants to play again, we reset everything pretty much (even menu particles)
             // Menu Button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
-                game.gameState = Game.STATE.Menu;
-                HUD.HEALTH = 200;
-                hud.setScore(0);
-                hud.setLevel(1);
-                for (int i = 0; i < 10; i++) {
-                    new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
-                }
+                AudioPlayer.playSound("res/click.wav");
+                AudioPlayer.playMusic("res/menu_music.wav");
+                game.reset();
             }
             // Quit Button
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
                 System.exit(0);
             }
         }

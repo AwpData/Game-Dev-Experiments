@@ -40,10 +40,12 @@ public class BasicEnemy extends GameObject {
         // We cannot clamp the enemies because they are constantly moving and we have to change their velocities instead
         // Bounces off edge if greater than max or min height (- 60 because it would bounce off screen so decreased the height!)
         if (y <= 0 || y >= Game.HEIGHT - 50) {
+            AudioPlayer.playSound("res/bounce.wav");
             velY *= -1;
         }
         // Bounces off edge if greater than max or min width ( - 32 for same reason for height)
         if (x <= 0 || x >= Game.WIDTH - 30) {
+            AudioPlayer.playSound("res/bounce.wav");
             velX *= -1;
         }
 
@@ -57,5 +59,4 @@ public class BasicEnemy extends GameObject {
         g.setColor(Color.orange);
         g.fillRect((int) x, (int) y, 16, 16);
     }
-
 }

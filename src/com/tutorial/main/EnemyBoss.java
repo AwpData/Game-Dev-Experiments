@@ -50,6 +50,7 @@ public class EnemyBoss extends GameObject {
             }
             // The below code before spawn just gradually speeds the boss up
             if (velX > 0) {
+
                 velX += 0.01f;
             } else if (velX < 0) {
                 velX -= 0.01f;
@@ -58,6 +59,7 @@ public class EnemyBoss extends GameObject {
             velX = Game.clamp(velX, -10, 10);
             int spawn = r.nextInt(10);
             if (spawn == 0) {
+                AudioPlayer.playSound("res/shot.wav");
                 new EnemyBossBullet((int) x + 48, (int) y + 48, ID.BasicEnemy, handler);
             }
         }
@@ -68,6 +70,7 @@ public class EnemyBoss extends GameObject {
 
         // Boss will continuously bounce left and right
         if (x <= 0 || x >= Game.WIDTH - 64) {
+            AudioPlayer.playSound("res/boss_bounce.wav");
             velX *= -1;
         }
 

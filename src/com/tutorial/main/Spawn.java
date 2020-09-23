@@ -23,7 +23,7 @@ public class Spawn {
         scoreKeep++;
         // This makes it easier to manage the score because we don't want to modify the HUD score
         // Every 100 points we increment the level and reset scoreKeep to keep progressing the game
-        if (scoreKeep >= 200) {
+        if (scoreKeep >= 500) {
             scoreKeep = 0;
             hud.setLevel(hud.getLevel() + 1);
             // Spawns basic enemies that are not on level multiples of 5
@@ -32,20 +32,23 @@ public class Spawn {
             if (hud.getLevel() == 2) {
                 new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
             }
-            if (hud.getLevel() == 4) {
-                new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-            }
-            if (hud.getLevel() == 6) {
+            if (hud.getLevel() == 3) {
+                handler.clearEnemies();
                 new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
             }
-            if (hud.getLevel() == 8) {
+            if (hud.getLevel() == 4) {
+                handler.clearEnemies();
+                new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+            }
+            if (hud.getLevel() == 5) {
                 new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
             }
-            if (hud.getLevel() == 10) {
+            if (hud.getLevel() == 6) {
                 handler.clearEnemies();
+                AudioPlayer.playSound("res/boss_laugh.wav");
                 new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler);
                 new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
             }

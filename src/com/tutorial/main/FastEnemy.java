@@ -30,9 +30,11 @@ public class FastEnemy extends GameObject {
         y += velY;
 
         if (y <= 0 || y >= Game.HEIGHT - 50) {
+            AudioPlayer.playSound("res/fast_bounce.wav");
             velY *= -1;
         }
         if (x <= 0 || x >= Game.WIDTH - 30) {
+            AudioPlayer.playSound("res/fast_bounce.wav");
             velX *= -1;
         }
 

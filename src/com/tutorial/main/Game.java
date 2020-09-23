@@ -18,6 +18,12 @@ public class Game extends Canvas implements Runnable, Serializable {
     // This tells if the program is running or not (based on thread)
     private boolean running = false;
 
+    // For pause menu
+    public static boolean paused = false;
+
+    // This is used to play the game over sound once while stopping the music
+    private boolean gameOver = false;
+
     // The menu
     private StateHandler stateHandler;
 
@@ -55,7 +61,7 @@ public class Game extends Canvas implements Runnable, Serializable {
         stateHandler = new StateHandler(this, handler, hud);
 
         // Listens for any keys and mouse pressing
-        this.addKeyListener(new KeyInput(handler));
+        this.addKeyListener(new KeyInput(handler, this));
         this.addMouseListener(new StateHandler(this, handler, hud));
 
         spawner = new Spawn(handler, hud);
@@ -63,8 +69,9 @@ public class Game extends Canvas implements Runnable, Serializable {
         // Window!
         new Window(WIDTH, HEIGHT, "Avoid Them...", this);
 
-        // Spawn menu particles
+        // Spawn menu particles and plays menu music on launch
         if (gameState == STATE.Menu) {
+            AudioPlayer.playMusic("res/menu_music.wav");
             for (int i = 0; i < 10; i++) {
                 new Particle(r.nextInt(WIDTH - 50), r.nextInt(HEIGHT - 50), ID.Particle, handler);
             }
@@ -124,14 +131,23 @@ public class Game extends Canvas implements Runnable, Serializable {
     // ticks every object with our handler
     // ticking is like the pre-render actions that occur for all objects (Ex. moving character right)
     private void tick() {
-        handler.tick();
+        if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver) {
+            handler.tick();
+        }
         // It depends on what STATE is what is updated for rendering
-        if (gameState == STATE.Game) {
-            hud.tick();
-            spawner.tick();
-            // If health is 0 game is over
-            if (HUD.HEALTH == 0) {
-                gameState = STATE.GameOver;
+        else if (gameState == STATE.Game) {
+            // Makes sure we aren't on the pause screen before rendering
+            if (!paused) {
+                handler.tick();
+                hud.tick();
+                spawner.tick();
+                // If health is 0 game is over
+                if (HUD.HEALTH == 0 && !gameOver) {
+                    gameState = STATE.GameOver;
+                    AudioPlayer.stopMusic();
+                    AudioPlayer.playSound("res/game_over.wav");
+                    gameOver = true;
+                }
             }
         }
     }
@@ -153,6 +169,10 @@ public class Game extends Canvas implements Runnable, Serializable {
 
         // Render checks what state we are in to correctly render stuff
         handler.render(g);
+
+        if (paused) {
+            g.drawString("PAUSED", 285, 150);
+        }
         if (gameState == STATE.Game) {
             // Renders the handler (for all objects) and the hud
             hud.render(g);
@@ -170,6 +190,19 @@ public class Game extends Canvas implements Runnable, Serializable {
         if (var >= max) {
             return max;
         } else return Math.max(var, min);
+    }
+
+    // resets the game to the menu
+    public void reset() {
+        handler.object.clear();
+        gameState = STATE.Menu;
+        gameOver = false;
+        HUD.HEALTH = 200;
+        hud.setLevel(1);
+        hud.setScore(0);
+        for (int i = 0; i < 10; i++) {
+            new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
+        }
     }
 
     public static void main(String[] args) {

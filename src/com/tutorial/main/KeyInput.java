@@ -5,13 +5,15 @@ import java.awt.event.*;
 public class KeyInput extends KeyAdapter {
 
     private Handler handler;
+    private Game game;
 
     // Each element this array responds to WASD (and checks if the key is down) [W, S, D, A]
     // true = key is being pressed; false = key is released
     private boolean[] keyDown = {false, false, false, false};
 
-    public KeyInput(Handler handler) {
+    public KeyInput(Handler handler, Game game) {
         this.handler = handler;
+        this.game = game;
     }
 
     // Checks which key is pressed and gets the Player from our handler to tick it
@@ -40,9 +42,19 @@ public class KeyInput extends KeyAdapter {
             }
         }
 
-        // Quits the game if ESC key is pressed
-        if (key == KeyEvent.VK_ESCAPE) {
-            System.exit(0);
+        // Pauses the game if in the game state
+        if (key == KeyEvent.VK_ESCAPE && game.gameState == Game.STATE.Game) {
+            if (Game.paused) {
+                // Plays the music again
+                AudioPlayer.playMusic.start();
+                Game.paused = false;
+            } else {
+                // Gets the position of our music so we can pause it
+                long clipTimePosition = AudioPlayer.playMusic.getMicrosecondPosition();
+                AudioPlayer.playMusic.setMicrosecondPosition(clipTimePosition);
+                AudioPlayer.stopMusic();
+                Game.paused = true;
+            }
         }
     }
 

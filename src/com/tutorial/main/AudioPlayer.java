@@ -9,7 +9,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-// BUG: music is not looping
+// BUG?: Music seems to loop now in-game, seems to have fixed itself
 // This is a static class, so all instances of AudioPlayer must be referenced in static context
 // Audio code that does not use Slick library
 public class AudioPlayer {
@@ -19,7 +19,7 @@ public class AudioPlayer {
     // I have a separate clip for the sounds because they don't loop and thus don't need to close like playMusic
     private static Clip playSound;
 
-    // Initializing playMusic so I can close it
+    // Initializing playMusic so I can close it and change the music
     static {
         try {
             playMusic = AudioSystem.getClip();

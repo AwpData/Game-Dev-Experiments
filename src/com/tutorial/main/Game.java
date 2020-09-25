@@ -24,6 +24,9 @@ public class Game extends Canvas implements Runnable, Serializable {
     // This is used to play the game over sound once while stopping the music
     private boolean gameOver = false;
 
+    // 0 = normal; 1 = hard
+    public int diff = 0;
+
     // The menu
     private StateHandler stateHandler;
 
@@ -46,6 +49,7 @@ public class Game extends Canvas implements Runnable, Serializable {
     public enum STATE {
         Menu,
         Help,
+        Select,
         GameOver,
         Game,
         Leaderboard
@@ -64,7 +68,7 @@ public class Game extends Canvas implements Runnable, Serializable {
         this.addKeyListener(new KeyInput(handler, this));
         this.addMouseListener(new StateHandler(this, handler, hud));
 
-        spawner = new Spawn(handler, hud);
+        spawner = new Spawn(handler, hud, this);
 
         // Window!
         new Window(WIDTH, HEIGHT, "Avoid Them...", this);
@@ -131,7 +135,7 @@ public class Game extends Canvas implements Runnable, Serializable {
     // ticks every object with our handler
     // ticking is like the pre-render actions that occur for all objects (Ex. moving character right)
     private void tick() {
-        if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver) {
+        if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver || gameState == STATE.Select) {
             handler.tick();
         }
         // It depends on what STATE is what is updated for rendering
@@ -166,17 +170,18 @@ public class Game extends Canvas implements Runnable, Serializable {
         g.setColor(Color.black);
         // But we must also make a rectangle to hide it
         g.fillRect(0, 0, WIDTH, HEIGHT);
-
         // Render checks what state we are in to correctly render stuff
         handler.render(g);
-
+        // If we pause the game, show this
         if (paused) {
+            g.setColor(Color.white);
             g.drawString("PAUSED", 285, 150);
         }
+        // Renders depending on what state we are in
         if (gameState == STATE.Game) {
             // Renders the handler (for all objects) and the hud
             hud.render(g);
-        } else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver) {
+        } else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver || gameState == STATE.Select) {
             stateHandler.render(g);
         }
         // Then we can get rid of graphics since we don't need it anymore (so it doesn't add to memory)

@@ -4,6 +4,7 @@ package com.tutorial.main;
 public enum ID {
     Player(),
     BasicEnemy(), // Basic enemy and fast enemy share the same ID
+    HardEnemy(),
     SmartEnemy(),
     EnemyBoss(),
     Particle(),

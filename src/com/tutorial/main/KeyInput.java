@@ -56,6 +56,14 @@ public class KeyInput extends KeyAdapter {
                 Game.paused = true;
             }
         }
+
+        // FOR INSTANT QUIT
+        if (key == KeyEvent.VK_L && game.gameState == Game.STATE.Game) {
+            HUD.HEALTH = 0;
+            if (Game.paused) {
+                Game.paused = false;
+            }
+        }
     }
 
     public void keyReleased(KeyEvent e) {

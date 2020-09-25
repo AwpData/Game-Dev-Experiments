@@ -26,40 +26,26 @@ public class StateHandler extends MouseAdapter {
         int my = e.getY();
 
         if (game.gameState == Game.STATE.Menu) {
-            // Play button
+            // Play Button
             if (mouseOver(mx, my, 220, 100, 200, 64)) {
                 AudioPlayer.playSound("res/click.wav");
-                AudioPlayer.playMusic("res/game_music.wav");
-                game.gameState = Game.STATE.Game;
-                handler.clearParticles();
-                // Places character in the middle of the screen
-                new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
-                // Level 1 enemy
-                new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                game.gameState = Game.STATE.Select;
             }
-            // Help button
+            // Help Button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
                 AudioPlayer.playSound("res/click.wav");
-                handler.clearParticles();
                 game.gameState = Game.STATE.Help;
             }
-
             // Quit button
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
                 AudioPlayer.playSound("res/click.wav");
                 System.exit(0);
             }
-
         } else if (game.gameState == Game.STATE.Help) {
             // Play button
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
                 AudioPlayer.playSound("res/click.wav");
-                AudioPlayer.playMusic("res/game_music.wav");
-                game.gameState = Game.STATE.Game;
-                // Places character in the middle of the screen
-                new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
-                // Level 1 enemy
-                new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                game.gameState = Game.STATE.Select;
             }
             // Menu button
             if (mouseOver(mx, my, 220, 300, 200, 64)) {
@@ -69,7 +55,32 @@ public class StateHandler extends MouseAdapter {
                     new Particle(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Particle, handler);
                 }
             }
-
+        } else if (game.gameState == Game.STATE.Select) {
+            // Normal Diff button
+            if (mouseOver(mx, my, 220, 100, 200, 64)) {
+                game.diff = 0;
+                AudioPlayer.playSound("res/click.wav");
+                AudioPlayer.playMusic("res/game_music.wav");
+                game.gameState = Game.STATE.Game;
+                handler.clearParticles();
+                new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
+                new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+            }
+            // Hard diff button
+            if (mouseOver(mx, my, 220, 200, 200, 64)) {
+                game.diff = 1;
+                AudioPlayer.playSound("res/click.wav");
+                AudioPlayer.playMusic("res/game_music.wav");
+                game.gameState = Game.STATE.Game;
+                handler.clearParticles();
+                new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
+                new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+            }
+            // Back button
+            if (mouseOver(mx, my, 220, 300, 200, 64)) {
+                AudioPlayer.playSound("res/click.wav");
+                game.gameState = Game.STATE.Menu;
+            }
         } else if (game.gameState == Game.STATE.GameOver) {
             // If the user wants to play again, we reset everything pretty much (even menu particles)
             // Menu Button
@@ -100,9 +111,7 @@ public class StateHandler extends MouseAdapter {
         // Draws the menu with a font!
         Font fnt = new Font("ariel", Font.BOLD, 50);
         Font fntSmall = new Font("ariel", Font.BOLD, 30);
-
         g.setColor(Color.white);
-
         // Menu or help screen state
         if (game.gameState == Game.STATE.Menu) {
             g.setFont(fnt);
@@ -117,6 +126,22 @@ public class StateHandler extends MouseAdapter {
 
             g.drawRect(220, 300, 200, 64);
             g.drawString("Quit", 292, 340);
+        } else if (game.gameState == Game.STATE.Select) {
+            g.setFont(fnt);
+            g.setColor(Color.red);
+            g.drawString("SELECT DIFFICULTY", 75, 75);
+
+            g.setFont(fntSmall);
+            g.setColor(Color.white);
+            g.drawRect(220, 100, 200, 64);
+            g.drawString("Normal", 272, 140);
+
+            g.drawRect(220, 200, 200, 64);
+            g.drawString("Hard", 292, 240);
+
+            g.drawRect(220, 300, 200, 64);
+            g.drawString("Back", 292, 340);
+
         } else if (game.gameState == Game.STATE.Help) {
             g.setFont(fntSmall);
             g.setColor(Color.red);
@@ -140,7 +165,7 @@ public class StateHandler extends MouseAdapter {
 
             g.setFont(fntSmall);
             g.setColor(Color.white);
-            g.drawString("Score: " + hud.getScore(), 205, 115);
+            g.drawString("Score: " + hud.getScore(), 250, 115);
 
             g.drawRect(220, 200, 200, 64);
             g.drawString("Menu", 282, 240);

@@ -1,5 +1,6 @@
 package com.tutorial.main;
 
+import javax.sound.sampled.Clip;
 import java.awt.event.*;
 
 public class KeyInput extends KeyAdapter {
@@ -42,19 +43,35 @@ public class KeyInput extends KeyAdapter {
             }
         }
 
+        // BUG: AFTER UNPAUSING, AND MUSIC LOOPS AGAIN, IT WILL KEEP RESTARTING SONG INSTEAD OF RESUMING WHERE IT IS
         // Pauses the game if in the game state
         if (key == KeyEvent.VK_ESCAPE && game.gameState == Game.STATE.Game) {
             if (Game.paused) {
+                AudioPlayer.playSound("res/pause.wav");
                 // Plays the music again
                 AudioPlayer.playMusic.start();
+                AudioPlayer.playMusic.loop(Clip.LOOP_CONTINUOUSLY);
                 Game.paused = false;
             } else {
                 // Gets the position of our music so we can pause it
+                AudioPlayer.playSound("res/pause.wav");
                 long clipTimePosition = AudioPlayer.playMusic.getMicrosecondPosition();
                 AudioPlayer.playMusic.setMicrosecondPosition(clipTimePosition);
                 AudioPlayer.stopMusic();
                 Game.paused = true;
             }
+        }
+        // Key to go to shop and game depending on state (does the pause and unpause audio trick too)
+        else if (key == KeyEvent.VK_SPACE && game.gameState == Game.STATE.Game && !Game.paused) {
+            AudioPlayer.playSound("res/shop.wav");
+            game.gameState = Game.STATE.Shop;
+            long clipTimePosition = AudioPlayer.playMusic.getMicrosecondPosition();
+            AudioPlayer.playMusic.setMicrosecondPosition(clipTimePosition);
+            AudioPlayer.stopMusic();
+        } else if (key == KeyEvent.VK_SPACE && game.gameState == Game.STATE.Shop) {
+            AudioPlayer.playSound("res/shop.wav");
+            game.gameState = Game.STATE.Game;
+            AudioPlayer.playMusic.start();
         }
 
         // FOR INSTANT QUIT
@@ -90,17 +107,17 @@ public class KeyInput extends KeyAdapter {
                 if (!keyDown[0] && !keyDown[1]) {
                     tempObject.setVelY(0);
                 } else if (keyDown[0] && !keyDown[1]) {
-                    tempObject.setVelY(-5);
+                    tempObject.setVelY(-(handler.spd));
                 } else if (!keyDown[0]) {
-                    tempObject.setVelY(5);
+                    tempObject.setVelY(handler.spd);
                 }
                 // horizontal movement
                 if (!keyDown[2] && !keyDown[3]) {
                     tempObject.setVelX(0);
                 } else if (keyDown[2] && !keyDown[3]) {
-                    tempObject.setVelX(5);
+                    tempObject.setVelX(handler.spd);
                 } else if (!keyDown[2]) {
-                    tempObject.setVelX(-5);
+                    tempObject.setVelX(-(handler.spd));
                 }
             }
         }

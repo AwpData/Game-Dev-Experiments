@@ -9,6 +9,9 @@ public class Handler {
     // Stores each game object in LinkedList (Fast!)
     LinkedList<GameObject> object = new LinkedList<>();
 
+    // Player movement speed (found in keyInput)
+    public int spd = 5;
+
     // ## tick and render each object with polymorphism ##
     public void tick() {
         // I can't use a for-each loop because I get an error for the trail :(

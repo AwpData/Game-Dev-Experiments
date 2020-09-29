@@ -17,11 +17,11 @@ public enum ID {
 // new Trail(x, y, ID.Trail, Color.REPLACEME, 16, 16, 0.07f, handler);
 
 // Game ideas:
-// Kill off enemies after some time, progressing the game while spawning harder enemies (use alpha / life trick for this)
-// Make enemy superclass with subclasses for easier management of each type of enemy
+// Make enemy boss class to take different parameters for different bosses
 // // Class would have to contain constructor with velx, vely, color, id; maybe lifespan and time?
 // Create a leaderboard screen
 // Add a button (maybe a pause button) that takes you to the menu
+// Add pausing sound
 
 
 // X, Y, velX, and velY are in floats -> need cast to ints (remember that data table? "You can add but can't remove")

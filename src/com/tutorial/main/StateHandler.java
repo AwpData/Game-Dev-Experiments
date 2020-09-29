@@ -3,6 +3,7 @@ package com.tutorial.main;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Random;
 
 // Java can only handle up to 16 bit sound files... please check this before adding
@@ -13,11 +14,14 @@ public class StateHandler extends MouseAdapter {
     private Handler handler;
     private HUD hud;
     private Random r = new Random();
+    private Leaderboard leaderboard;
+    private boolean scoresShown = false;
 
     public StateHandler(Game game, Handler handler, HUD hud) {
         this.game = game;
         this.handler = handler;
         this.hud = hud;
+        this.leaderboard = leaderboard;
     }
 
     public void mousePressed(MouseEvent e) {
@@ -111,6 +115,7 @@ public class StateHandler extends MouseAdapter {
         // Draws the menu with a font!
         Font fnt = new Font("ariel", Font.BOLD, 50);
         Font fntSmall = new Font("ariel", Font.BOLD, 30);
+        Font fntSmallest = new Font("ariel", Font.BOLD, 16);
         g.setColor(Color.white);
         // Menu or help screen state
         if (game.gameState == Game.STATE.Menu) {
@@ -126,6 +131,10 @@ public class StateHandler extends MouseAdapter {
 
             g.drawRect(220, 300, 200, 64);
             g.drawString("Quit", 292, 340);
+
+            g.setFont(fntSmallest);
+            g.drawRect(460, 370, 150, 64);
+            g.drawString("Leaderboard", 485, 405);
         } else if (game.gameState == Game.STATE.Select) {
             g.setFont(fnt);
             g.setColor(Color.red);
@@ -148,7 +157,7 @@ public class StateHandler extends MouseAdapter {
             g.drawString("Avoid touching anything at all costs...", 20, 75);
             g.setColor(Color.white);
             g.drawString("WASD or Arrow keys to move", 20, 115);
-            g.drawString("10 Levels so far; boss is at level 10", 20, 155);
+            g.drawString("6 Levels so far; boss is at level 6", 20, 155);
 
             g.drawRect(220, 200, 200, 64);
             g.drawString("Play", 292, 240);
@@ -172,6 +181,26 @@ public class StateHandler extends MouseAdapter {
 
             g.drawRect(220, 300, 200, 64);
             g.drawString("Quit", 292, 340);
+        } else if (game.gameState == Game.STATE.Leaderboard) { // NEED TO IMPLEMENT
+            handler.object.clear();
+            g.setFont(fnt);
+            g.setColor(Color.red);
+            g.drawString("Leaderboard", 195, 75);
+
+            g.setFont(fntSmall);
+            g.setColor(Color.yellow);
+            // Figure this out tomorrow
+            Iterator<Integer> iterator = new Iterator<>() {
+                @Override
+                public boolean hasNext() {
+                    return false;
+                }
+
+                @Override
+                public Integer next() {
+                    return null;
+                }
+            };
         }
     }
 }

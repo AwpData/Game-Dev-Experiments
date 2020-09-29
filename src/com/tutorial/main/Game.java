@@ -42,6 +42,12 @@ public class Game extends Canvas implements Runnable, Serializable {
     // The particle
     private Particle particle;
 
+    // Leaderboard class
+    private Leaderboard leaderboard;
+
+    // Shop
+    private Shop shop;
+
     // Random object for random object positioning
     private Random r = new Random();
 
@@ -52,6 +58,7 @@ public class Game extends Canvas implements Runnable, Serializable {
         Select,
         GameOver,
         Game,
+        Shop,
         Leaderboard
     }
 
@@ -62,11 +69,14 @@ public class Game extends Canvas implements Runnable, Serializable {
         // Put handler here to avoid nullpointerexception (Create before we use it)
         handler = new Handler();
         hud = new HUD();
+        shop = new Shop(handler, hud, this);
         stateHandler = new StateHandler(this, handler, hud);
+        leaderboard = new Leaderboard();
 
         // Listens for any keys and mouse pressing
         this.addKeyListener(new KeyInput(handler, this));
-        this.addMouseListener(new StateHandler(this, handler, hud));
+        this.addMouseListener(stateHandler);
+        this.addMouseListener(shop);
 
         spawner = new Spawn(handler, hud, this);
 
@@ -171,7 +181,6 @@ public class Game extends Canvas implements Runnable, Serializable {
         // But we must also make a rectangle to hide it
         g.fillRect(0, 0, WIDTH, HEIGHT);
         // Render checks what state we are in to correctly render stuff
-        handler.render(g);
         // If we pause the game, show this
         if (paused) {
             g.setColor(Color.white);
@@ -181,8 +190,12 @@ public class Game extends Canvas implements Runnable, Serializable {
         if (gameState == STATE.Game) {
             // Renders the handler (for all objects) and the hud
             hud.render(g);
+            handler.render(g);
         } else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.GameOver || gameState == STATE.Select) {
             stateHandler.render(g);
+            handler.render(g);
+        } else if (gameState == STATE.Shop) {
+            shop.render(g);
         }
         // Then we can get rid of graphics since we don't need it anymore (so it doesn't add to memory)
         g.dispose();
@@ -199,6 +212,7 @@ public class Game extends Canvas implements Runnable, Serializable {
 
     // resets the game to the menu
     public void reset() {
+        leaderboard.addScore(hud.getScore());
         handler.object.clear();
         gameState = STATE.Menu;
         gameOver = false;

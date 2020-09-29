@@ -174,7 +174,7 @@ public class StateHandler extends MouseAdapter {
 
             g.setFont(fntSmall);
             g.setColor(Color.white);
-            g.drawString("Score: " + hud.getScore(), 250, 115);
+            g.drawString("Total Score: " + hud.getTotalScore(), 200, 115);
 
             g.drawRect(220, 200, 200, 64);
             g.drawString("Menu", 282, 240);

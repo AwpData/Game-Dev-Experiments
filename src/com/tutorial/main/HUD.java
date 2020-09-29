@@ -7,8 +7,11 @@ public class HUD {
     // Static because we only have one health (we do 100 because it is a good point value / most games use 100 for health)
     public static float HEALTH = 100;
 
-    // Score you see on screen
+    // Total score overall
+    private int totalScore = 0;
+    // Score used for shop / see on screen
     private int score = 0;
+
     private int level = 1;
 
     /* private int greenValue = 255;*/
@@ -21,6 +24,7 @@ public class HUD {
         // And we clamp the health to not go outside of the bar at 0 while it decreases due to collisions
         HEALTH = (int) Game.clamp(HEALTH, 0, 100 + (bounds / 2));
         score++;
+        totalScore++;
 
        /* greenValue = Game.clamp(greenValue, 0, 255);
         greenValue = HEALTH * 2;*/
@@ -51,6 +55,10 @@ public class HUD {
     // Getters and setters for usage in the Spawn class
     public int getScore() {
         return score;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
     }
 
     public void setScore(int score) {

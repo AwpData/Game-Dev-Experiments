@@ -94,4 +94,10 @@ public class Shop extends MouseAdapter {
             }
         }
     }
+
+    public void reset() {
+        healthCost = 1000;
+        speedCost = 1000;
+        hud.bounds = 0;
+    }
 }

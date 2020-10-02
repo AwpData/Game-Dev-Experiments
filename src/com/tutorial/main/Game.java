@@ -205,9 +205,12 @@ public class Game extends Canvas implements Runnable, Serializable {
     // resets the game to the menu
     public void reset() {
         handler.object.clear();
+        handler.spd = 5;
         gameState = STATE.Menu;
         gameOver = false;
         HUD.HEALTH = 200;
+        HUD.maxHealth = (int) (HUD.HEALTH / 2);
+        shop.reset();
         hud.setLevel(1);
         hud.setScore(0);
         for (int i = 0; i < 10; i++) {

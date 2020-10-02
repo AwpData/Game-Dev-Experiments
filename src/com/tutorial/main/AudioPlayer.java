@@ -10,16 +10,12 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-// BUG?: Music seems to loop now in-game, seems to have fixed itself
 // This is a static class, so all instances of AudioPlayer must be referenced in static context
 // Audio code that does not use Slick library
 public class AudioPlayer {
 
     // The clip is how we play the audio (I initialized it before so that I could change songs)
     public static Clip playMusic;
-    // I have a separate clip for the sounds because they don't loop and thus don't need to close like playMusic
-    private static Clip playSound;
-    private static HUD hud;
 
     static {
         try {
@@ -39,7 +35,7 @@ public class AudioPlayer {
             // This creates a DAEMON thread that we need to open before starting it
             playMusic.open(sound);
             FloatControl volume = (FloatControl) playMusic.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(0.1f);
+            volume.setValue(-15.0f);
             playMusic.start();
             playMusic.loop(Clip.LOOP_CONTINUOUSLY);
             // This is also how we can stop something that has .loop or .start on the clip
@@ -54,23 +50,23 @@ public class AudioPlayer {
     // Plays the regular interval game music
     public static void playGameMusic() {
         // Levels 1 - 9
-        if (hud.getLevel() > 0 && hud.getLevel() < 10) {
+        if (HUD.getLevel() > 0 && HUD.getLevel() < 10) {
             AudioPlayer.playMusic("res/game_music1.wav");
         }
-        if (hud.getLevel() >= 10 && hud.getLevel() < 15) {
+        if (HUD.getLevel() >= 10 && HUD.getLevel() < 15) {
             AudioPlayer.randomBossSong();
         }
-        if (hud.getLevel() >= 15 && hud.getLevel() < 25) {
+        if (HUD.getLevel() >= 15 && HUD.getLevel() < 25) {
             AudioPlayer.playMusic("res/game_music2.wav");
         }
-        if (hud.getLevel() >= 25) {
+        if (HUD.getLevel() >= 25) {
             AudioPlayer.playMusic("res/game_music3.wav");
         }
     }
 
     // Random boss song?!
     public static void randomBossSong() {
-        File file = null;
+        File file;
         try {
             playMusic.close();
             Random r = new Random();
@@ -79,14 +75,14 @@ public class AudioPlayer {
                 file = new File("res/BossSong1.wav");
             } else if (num == 2) {
                 file = new File("res/BossSong2.wav");
-            } else if (num == 3) {
+            } else {
                 file = new File("res/BossSong3.wav");
             }
             assert false;
             AudioInputStream sound = AudioSystem.getAudioInputStream(file);
             playMusic.open(sound);
             FloatControl volume = (FloatControl) playMusic.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(0.1f);
+            volume.setValue(-20.0f);
             playMusic.start();
             playMusic.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
@@ -104,10 +100,11 @@ public class AudioPlayer {
         File file = new File(location);
         try {
             AudioInputStream gameSound = AudioSystem.getAudioInputStream(file);
-            playSound = AudioSystem.getClip();
+            // I have a separate clip for the sounds because they don't loop and thus don't need to close like playMusic
+            Clip playSound = AudioSystem.getClip();
             playSound.open(gameSound);
             FloatControl volume = (FloatControl) playSound.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(0.01f);
+            volume.setValue(-20.0f);
             // Plays it once with .start
             playSound.start();
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {

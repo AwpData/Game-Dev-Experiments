@@ -3,25 +3,21 @@ package com.tutorial.main;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 import java.util.Random;
 
 // Java can only handle up to 16 bit sound files... please check this before adding
 // StateHandler manages the current screen shown (but doesn't update Game class)
 public class StateHandler extends MouseAdapter {
 
-    private Game game;
-    private Handler handler;
-    private HUD hud;
-    private Random r = new Random();
-    private Leaderboard leaderboard;
-    private boolean scoresShown = false;
+    private final Game game;
+    private final Handler handler;
+    private final HUD hud;
+    private final Random r = new Random();
 
     public StateHandler(Game game, Handler handler, HUD hud) {
         this.game = game;
         this.handler = handler;
         this.hud = hud;
-        this.leaderboard = leaderboard;
     }
 
     public void mousePressed(MouseEvent e) {
@@ -115,7 +111,6 @@ public class StateHandler extends MouseAdapter {
         // Draws the menu with a font!
         Font fnt = new Font("ariel", Font.BOLD, 50);
         Font fntSmall = new Font("ariel", Font.BOLD, 30);
-        Font fntSmallest = new Font("ariel", Font.BOLD, 16);
         g.setColor(Color.white);
         // Menu or help screen state
         if (game.gameState == Game.STATE.Menu) {
@@ -181,26 +176,6 @@ public class StateHandler extends MouseAdapter {
 
             g.drawRect(220, 300, 200, 64);
             g.drawString("Quit", 292, 340);
-        } else if (game.gameState == Game.STATE.Leaderboard) { // NEED TO IMPLEMENT
-            handler.object.clear();
-            g.setFont(fnt);
-            g.setColor(Color.red);
-            g.drawString("Leaderboard", 195, 75);
-
-            g.setFont(fntSmall);
-            g.setColor(Color.yellow);
-            // Figure this out tomorrow
-            Iterator<Integer> iterator = new Iterator<>() {
-                @Override
-                public boolean hasNext() {
-                    return false;
-                }
-
-                @Override
-                public Integer next() {
-                    return null;
-                }
-            };
         }
     }
 }

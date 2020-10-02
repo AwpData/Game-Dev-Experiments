@@ -1,21 +1,18 @@
 package com.tutorial.main;
 
-import javax.sound.sampled.Clip;
 import java.awt.event.*;
 
 public class KeyInput extends KeyAdapter {
-    private Handler handler;
-    private Game game;
-    private HUD hud;
+    private final Handler handler;
+    private final Game game;
 
     // Each element this array responds to WASD (and checks if the key is down) [W, S, D, A]
     // true = key is being pressed; false = key is released
-    private boolean[] keyDown = {false, false, false, false};
+    private final boolean[] keyDown = {false, false, false, false};
 
-    public KeyInput(Handler handler, Game game, HUD hud) {
+    public KeyInput(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
-        this.hud = hud;
     }
 
     // Checks which key is pressed and gets the Player from our handler to tick it
@@ -52,7 +49,7 @@ public class KeyInput extends KeyAdapter {
                 Game.paused = false;
             } else {
                 AudioPlayer.playSound("res/pause.wav");
-                AudioPlayer.playMusic("res/PauseMusic.wav");
+                AudioPlayer.stopMusic();
                 Game.paused = true;
             }
         }

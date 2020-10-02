@@ -1,13 +1,11 @@
 package com.tutorial.main;
 
 import java.awt.*;
-import java.util.Random;
 
 // Smart enemies can track the player, thus, we need the player in this class
 public class SmartEnemy extends GameObject {
 
-    Random r = new Random();
-    private Handler handler;
+    private final Handler handler;
 
     private GameObject player;
 

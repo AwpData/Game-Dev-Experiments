@@ -7,8 +7,8 @@ import java.util.Random;
 // Particles for menu screen
 public class Particle extends GameObject {
     Random r = new Random();
-    private Handler handler;
-    private Color color;
+    private final Handler handler;
+    private final Color color;
 
     public Particle(int x, int y, ID id, Handler handler) {
         super(x, y, id);

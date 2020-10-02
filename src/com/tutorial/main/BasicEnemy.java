@@ -1,12 +1,10 @@
 package com.tutorial.main;
 
 import java.awt.*;
-import java.util.Random;
 
 public class BasicEnemy extends GameObject {
 
-    Random r = new Random();
-    private Handler handler;
+    private final Handler handler;
 
     // Kills them off screen over time for next levels
    /* private int lifeSpan = 1000;

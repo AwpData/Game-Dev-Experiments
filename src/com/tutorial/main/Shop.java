@@ -7,12 +7,12 @@ import java.awt.event.MouseEvent;
 // Speed, health, and health refills
 public class Shop extends MouseAdapter {
 
-    private Handler handler;
-    private HUD hud;
-    private Game game;
+    private final Handler handler;
+    private final HUD hud;
+    private final Game game;
     private int healthCost = 1000;
     private int speedCost = 1000;
-    private int refillHealthCost = 1000;
+    private final int refillHealthCost = 1000;
 
     public Shop(Handler handler, HUD hud, Game game) {
         this.handler = handler;

@@ -6,8 +6,7 @@ import java.util.Random;
 // Fast enemy is faster than basic by 4 pixels
 public class FastEnemy extends GameObject {
 
-    Random r = new Random();
-    private Handler handler;
+    private final Handler handler;
 
     public FastEnemy(int x, int y, ID id, Handler handler) {
         super(x, y, id);

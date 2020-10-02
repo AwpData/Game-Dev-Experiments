@@ -7,7 +7,7 @@ import java.util.Random;
 public class EnemyBoss extends GameObject {
 
     Random r = new Random();
-    private Handler handler;
+    private final Handler handler;
 
     // Timers are for boss movement sequence
     private int timer = 55; // Time to move down

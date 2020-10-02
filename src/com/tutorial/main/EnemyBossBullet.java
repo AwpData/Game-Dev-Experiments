@@ -7,8 +7,7 @@ import java.util.Random;
 public class EnemyBossBullet extends GameObject {
 
     Random r = new Random();
-    private Handler handler;
-    private GameObject player;
+    private final Handler handler;
 
     public EnemyBossBullet(float x, float y, ID id, Handler handler) {
         super(x, y, id);

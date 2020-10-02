@@ -2,7 +2,6 @@ package com.tutorial.main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.io.Serializable;
 
 public class Window extends Canvas implements Serializable {

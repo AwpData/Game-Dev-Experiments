@@ -28,28 +28,22 @@ public class Game extends Canvas implements Runnable, Serializable {
     public int diff = 0;
 
     // The menu
-    private StateHandler stateHandler;
+    private final StateHandler stateHandler;
 
     // This handler handles every object (renders and ticks them)
-    private Handler handler;
+    private final Handler handler;
 
     // The HUD
-    private HUD hud;
+    private final HUD hud;
 
     // Spawn class for enemies
-    private Spawn spawner;
-
-    // The particle
-    private Particle particle;
-
-    // Leaderboard class
-    private Leaderboard leaderboard;
+    private final Spawn spawner;
 
     // Shop
-    private Shop shop;
+    private final Shop shop;
 
     // Random object for random object positioning
-    private Random r = new Random();
+    private final Random r = new Random();
 
     // Enums that track which screen we are on for ticking and rendering purposes (changes the game's state)
     public enum STATE {
@@ -59,7 +53,6 @@ public class Game extends Canvas implements Runnable, Serializable {
         GameOver,
         Game,
         Shop,
-        Leaderboard
     }
 
     // This line will determine what is shown on screen (Menu is first obviously)
@@ -71,10 +64,9 @@ public class Game extends Canvas implements Runnable, Serializable {
         hud = new HUD();
         shop = new Shop(handler, hud, this);
         stateHandler = new StateHandler(this, handler, hud);
-        leaderboard = new Leaderboard();
 
         // Listens for any keys and mouse pressing
-        this.addKeyListener(new KeyInput(handler, this, hud));
+        this.addKeyListener(new KeyInput(handler, this));
         this.addMouseListener(stateHandler);
         this.addMouseListener(shop);
 
@@ -212,7 +204,6 @@ public class Game extends Canvas implements Runnable, Serializable {
 
     // resets the game to the menu
     public void reset() {
-        leaderboard.addScore(hud.getScore());
         handler.object.clear();
         gameState = STATE.Menu;
         gameOver = false;

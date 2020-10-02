@@ -7,11 +7,12 @@ public class Trail extends GameObject {
     // This is the life of our trail which fades slowly, and when it equals 0 we destroy it
     private float alpha = 1;
     // Life is like the time it will be on screen (because it subtracts from alpha)
-    private float life;
+    private final float life;
 
-    private Handler handler;
-    private Color color;
-    private int width, height;
+    private final Handler handler;
+    private final Color color;
+    private final int width;
+    private final int height;
 
     // life = 0.01 -> 0.1
     // The smaller the life, the longer the trail will be on screen

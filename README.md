@@ -1,3 +1,3 @@
 # Game-Dev-Experiments
 
-Download in releases if you want to play. Still updating; may be some bugs.
+ Still updating; may be some bugs. <br> Download: https://rb.gy/tjsaqr <br> Directions to Play: Extract folder and open runnable JAR

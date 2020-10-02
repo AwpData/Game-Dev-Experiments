@@ -152,7 +152,7 @@ public class StateHandler extends MouseAdapter {
             g.drawString("Avoid touching anything at all costs...", 20, 75);
             g.setColor(Color.white);
             g.drawString("WASD or Arrow keys to move", 20, 115);
-            g.drawString("6 Levels so far; boss is at level 6", 20, 155);
+            g.drawString("Survive as long as you can!", 20, 155);
 
             g.drawRect(220, 200, 200, 64);
             g.drawString("Play", 292, 240);

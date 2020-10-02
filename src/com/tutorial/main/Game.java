@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable, Serializable {
         leaderboard = new Leaderboard();
 
         // Listens for any keys and mouse pressing
-        this.addKeyListener(new KeyInput(handler, this));
+        this.addKeyListener(new KeyInput(handler, this, hud));
         this.addMouseListener(stateHandler);
         this.addMouseListener(shop);
 
@@ -158,7 +158,7 @@ public class Game extends Canvas implements Runnable, Serializable {
                 // If health is 0 game is over
                 if (HUD.HEALTH == 0 && !gameOver) {
                     gameState = STATE.GameOver;
-                    AudioPlayer.stopMusic();
+                    AudioPlayer.playMusic("res/GameOverMusic.wav");
                     AudioPlayer.playSound("res/game_over.wav");
                     gameOver = true;
                 }

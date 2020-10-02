@@ -43,8 +43,10 @@ public class Shop extends MouseAdapter {
         g.drawString("Refill Health", 410, 120);
         g.drawString("Cost: " + refillHealthCost, 410, 140);
 
+        g.setFont(new Font("Ariel", Font.PLAIN, 24));
         g.drawString("Score: " + hud.getScore(), Game.WIDTH / 2 - 50, 300);
-        g.drawString("Press SPACE to go back to game", Game.WIDTH / 2 - 50, 330);
+        g.setFont(new Font("Ariel", Font.PLAIN, 12));
+        g.drawString("Press SPACE to go back to game", Game.WIDTH / 2 - 50, 350);
     }
 
     public void mousePressed(MouseEvent e) {
@@ -55,7 +57,6 @@ public class Shop extends MouseAdapter {
             // health box (dimensions are between 100 and 200 because width is 100, same logic for height)
             if (mx >= 100 && mx <= 200) {
                 if (my >= 100 && my <= 180) {
-                    System.out.println("clicking on health box");
                     if (hud.getScore() >= healthCost) {
                         AudioPlayer.playSound("res/purchase.wav");
                         hud.setScore(hud.getScore() - healthCost);
@@ -70,7 +71,6 @@ public class Shop extends MouseAdapter {
             // Speed box
             if (mx >= 250 && mx <= 350) {
                 if (my >= 100 && my <= 180) {
-                    System.out.println("clicking on speed box");
                     if (hud.getScore() >= speedCost) {
                         AudioPlayer.playSound("res/purchase.wav");
                         hud.setScore(hud.getScore() - speedCost);

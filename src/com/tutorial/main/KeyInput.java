@@ -4,17 +4,18 @@ import javax.sound.sampled.Clip;
 import java.awt.event.*;
 
 public class KeyInput extends KeyAdapter {
-
     private Handler handler;
     private Game game;
+    private HUD hud;
 
     // Each element this array responds to WASD (and checks if the key is down) [W, S, D, A]
     // true = key is being pressed; false = key is released
     private boolean[] keyDown = {false, false, false, false};
 
-    public KeyInput(Handler handler, Game game) {
+    public KeyInput(Handler handler, Game game, HUD hud) {
         this.handler = handler;
         this.game = game;
+        this.hud = hud;
     }
 
     // Checks which key is pressed and gets the Player from our handler to tick it
@@ -43,35 +44,27 @@ public class KeyInput extends KeyAdapter {
             }
         }
 
-        // BUG: AFTER UNPAUSING, AND MUSIC LOOPS AGAIN, IT WILL KEEP RESTARTING SONG INSTEAD OF RESUMING WHERE IT IS
         // Pauses the game if in the game state
         if (key == KeyEvent.VK_ESCAPE && game.gameState == Game.STATE.Game) {
             if (Game.paused) {
                 AudioPlayer.playSound("res/pause.wav");
-                // Plays the music again
-                AudioPlayer.playMusic.start();
-                AudioPlayer.playMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                AudioPlayer.playGameMusic();
                 Game.paused = false;
             } else {
-                // Gets the position of our music so we can pause it
                 AudioPlayer.playSound("res/pause.wav");
-                long clipTimePosition = AudioPlayer.playMusic.getMicrosecondPosition();
-                AudioPlayer.playMusic.setMicrosecondPosition(clipTimePosition);
-                AudioPlayer.stopMusic();
+                AudioPlayer.playMusic("res/PauseMusic.wav");
                 Game.paused = true;
             }
         }
         // Key to go to shop and game depending on state (does the pause and unpause audio trick too)
         else if (key == KeyEvent.VK_SPACE && game.gameState == Game.STATE.Game && !Game.paused) {
             AudioPlayer.playSound("res/shop.wav");
+            AudioPlayer.playMusic("res/ShopMusic.wav");
             game.gameState = Game.STATE.Shop;
-            long clipTimePosition = AudioPlayer.playMusic.getMicrosecondPosition();
-            AudioPlayer.playMusic.setMicrosecondPosition(clipTimePosition);
-            AudioPlayer.stopMusic();
         } else if (key == KeyEvent.VK_SPACE && game.gameState == Game.STATE.Shop) {
             AudioPlayer.playSound("res/shop.wav");
+            AudioPlayer.playGameMusic();
             game.gameState = Game.STATE.Game;
-            AudioPlayer.playMusic.start();
         }
 
         // FOR INSTANT QUIT

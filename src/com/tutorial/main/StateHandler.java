@@ -64,7 +64,7 @@ public class StateHandler extends MouseAdapter {
             if (mouseOver(mx, my, 220, 100, 200, 64)) {
                 game.diff = 0;
                 AudioPlayer.playSound("res/click.wav");
-                AudioPlayer.playMusic("res/game_music.wav");
+                AudioPlayer.playGameMusic();
                 game.gameState = Game.STATE.Game;
                 handler.clearParticles();
                 new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
@@ -74,7 +74,7 @@ public class StateHandler extends MouseAdapter {
             if (mouseOver(mx, my, 220, 200, 200, 64)) {
                 game.diff = 1;
                 AudioPlayer.playSound("res/click.wav");
-                AudioPlayer.playMusic("res/game_music.wav");
+                AudioPlayer.playGameMusic();
                 game.gameState = Game.STATE.Game;
                 handler.clearParticles();
                 new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler);
@@ -132,9 +132,9 @@ public class StateHandler extends MouseAdapter {
             g.drawRect(220, 300, 200, 64);
             g.drawString("Quit", 292, 340);
 
-            g.setFont(fntSmallest);
+    /*        g.setFont(fntSmallest);
             g.drawRect(460, 370, 150, 64);
-            g.drawString("Leaderboard", 485, 405);
+            g.drawString("Leaderboard", 485, 405);*/
         } else if (game.gameState == Game.STATE.Select) {
             g.setFont(fnt);
             g.setColor(Color.red);

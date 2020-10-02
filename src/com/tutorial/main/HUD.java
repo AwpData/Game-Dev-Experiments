@@ -12,7 +12,7 @@ public class HUD {
     // Score used for shop / see on screen
     private int score = 0;
 
-    private int level = 1;
+    private static int level = 1;
 
     /* private int greenValue = 255;*/
 
@@ -65,7 +65,7 @@ public class HUD {
         this.score = score;
     }
 
-    public int getLevel() {
+    public static int getLevel() {
         return level;
     }
 
@@ -73,7 +73,4 @@ public class HUD {
         this.level = level;
     }
 
-    public int getHealth() {
-        return (int) HEALTH;
-    }
 }

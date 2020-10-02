@@ -42,6 +42,7 @@ public class Player extends GameObject {
                     // collision code
                     // Decrease by 2 because our health is 200 width (and it is supposed to be 100 health, make the connection...)
                     HUD.HEALTH -= 2;
+                    AudioPlayer.playSound("res/Hit.wav");
                 }
             }
         }

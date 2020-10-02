@@ -3,7 +3,7 @@ package com.tutorial.main;
 import java.awt.*;
 import java.util.Random;
 
-// Need to add more levels
+// Add boss cycle with enemy cycle somehow later
 // This class spawns the enemies / score and level management
 public class Spawn {
 
@@ -30,55 +30,63 @@ public class Spawn {
             scoreKeep = 0;
             hud.setLevel(hud.getLevel() + 1);
             if (game.diff == 0) {
-                if (hud.getLevel() == 2) {
+                if (hud.getLevel() > 0 && hud.getLevel() < 10) {
                     new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 }
-                if (hud.getLevel() == 3) {
-                    handler.clearEnemies();
-                    new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                }
-                if (hud.getLevel() == 4) {
-                    handler.clearEnemies();
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                }
-                if (hud.getLevel() == 5) {
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
-                }
-                if (hud.getLevel() == 6) {
+                if (hud.getLevel() == 10) {
                     handler.clearEnemies();
                     AudioPlayer.playSound("res/boss_laugh.wav");
+                    AudioPlayer.randomBossSong();
                     new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler);
                     new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                }
+                if (hud.getLevel() == 15) {
+                    handler.clearEnemies();
+                    AudioPlayer.playGameMusic();
+                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                }
+                if (hud.getLevel() >= 15 && hud.getLevel() < 25) {
+                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                }
+                if (hud.getLevel() == 25) {
+                    handler.clearEnemies();
+                    AudioPlayer.playGameMusic();
+                }
+                if (hud.getLevel() >= 25) {
+                    new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                    new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 }
             } else if (game.diff == 1) {
-                if (hud.getLevel() == 2) {
+                if (hud.getLevel() > 0 && hud.getLevel() < 10) {
                     new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 }
-                if (hud.getLevel() == 3) {
-                    handler.clearEnemies();
-                    new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                }
-                if (hud.getLevel() == 4) {
-                    handler.clearEnemies();
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                }
-                if (hud.getLevel() == 5) {
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
-                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
-                }
-                if (hud.getLevel() == 6) {
+                if (hud.getLevel() == 10) {
                     handler.clearEnemies();
                     AudioPlayer.playSound("res/boss_laugh.wav");
+                    AudioPlayer.randomBossSong();
                     new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler);
                     new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                }
+                if (hud.getLevel() == 15) {
+                    handler.clearEnemies();
+                    AudioPlayer.playGameMusic();
+                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                }
+                if (hud.getLevel() >= 15 && hud.getLevel() < 25) {
+                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                    new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                }
+                if (hud.getLevel() == 25) {
+                    handler.clearEnemies();
+                    AudioPlayer.playGameMusic();
+                    new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler);
+                }
+                if (hud.getLevel() >= 25) {
+                    new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                    new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
+                    new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler);
                 }
             }
         }

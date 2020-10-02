@@ -42,7 +42,7 @@ public class Handler {
     public void clearEnemies() {
         for (int i = 0; i < object.size(); i++) {
             ID id = object.get(i).getId();
-            if (id == ID.BasicEnemy || id == ID.SmartEnemy) {
+            if (id == ID.BasicEnemy || id == ID.SmartEnemy || id == ID.EnemyBoss || id == ID.HardEnemy) {
                 removeObject(object.get(i));
                 i--;
             }

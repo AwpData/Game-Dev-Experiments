@@ -2,6 +2,7 @@ package com.tutorial.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -18,8 +19,8 @@ public class AudioPlayer {
     public static Clip playMusic;
     // I have a separate clip for the sounds because they don't loop and thus don't need to close like playMusic
     private static Clip playSound;
+    private static HUD hud;
 
-    // Initializing playMusic so I can close it and change the music
     static {
         try {
             playMusic = AudioSystem.getClip();
@@ -45,6 +46,49 @@ public class AudioPlayer {
             // JOptionPane.showMessageDialog(null, "Press to stop playing");
             // clip.stop();
             // clip.setFrameSecond(0) to reset back to beginning
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Plays the regular interval game music
+    public static void playGameMusic() {
+        // Levels 1 - 9
+        if (hud.getLevel() > 0 && hud.getLevel() < 10) {
+            AudioPlayer.playMusic("res/game_music1.wav");
+        }
+        if (hud.getLevel() >= 10 && hud.getLevel() < 15) {
+            AudioPlayer.randomBossSong();
+        }
+        if (hud.getLevel() >= 15 && hud.getLevel() < 25) {
+            AudioPlayer.playMusic("res/game_music2.wav");
+        }
+        if (hud.getLevel() >= 25) {
+            AudioPlayer.playMusic("res/game_music3.wav");
+        }
+    }
+
+    // Random boss song?!
+    public static void randomBossSong() {
+        File file = null;
+        try {
+            playMusic.close();
+            Random r = new Random();
+            int num = r.nextInt(3) + 1;
+            if (num == 1) {
+                file = new File("res/BossSong1.wav");
+            } else if (num == 2) {
+                file = new File("res/BossSong2.wav");
+            } else if (num == 3) {
+                file = new File("res/BossSong3.wav");
+            }
+            assert false;
+            AudioInputStream sound = AudioSystem.getAudioInputStream(file);
+            playMusic.open(sound);
+            FloatControl volume = (FloatControl) playMusic.getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(0.1f);
+            playMusic.start();
+            playMusic.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
@@ -82,8 +126,8 @@ public class AudioPlayer {
     // Loads in all the sounds
     public static void load() throws SlickException {
         soundMap.put("click", new Sound("res/click.wav"));
-        musicMap.put("menu_music", new Music("res/game_music.wav"));
-        musicMap.put("game_music", new Music("res/game_music.wav"));
+        musicMap.put("menu_music", new Music("res/game_music2.wav"));
+        musicMap.put("game_music", new Music("res/game_music2.wav"));
     }
 
     public static Music getMusic(String key) {

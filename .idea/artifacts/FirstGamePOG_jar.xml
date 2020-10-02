@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FirstGamePOG:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FirstGamePOG_jar</output-path>
+    <root id="archive" name="FirstGameTutorial.jar">
+      <element id="module-output" name="FirstGameTutorial" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/Java/libs/jars/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/Java/libs/jars/jorbis-0.0.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/Java/libs/jars/jogg-0.0.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/Java/libs/jars/jinput.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/Java/libs/jars/slick.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
